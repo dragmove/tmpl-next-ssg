@@ -1,0 +1,5 @@
+// @see https://nextjs.org/docs/messages/react-hydration-error
+{
+  "presets": ["next/babel"],
+  "plugins": ["styled-components"]
+}

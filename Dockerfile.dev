@@ -1,0 +1,15 @@
+# TODO: Optimize zero-installs with docker
+# @see https://github.com/yarnpkg/berry/discussions/3201
+
+FROM node:16-alpine
+
+# Next.js collects completely anonymous telemetry data about general usage. (@see https://nextjs.org/telemetry)
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PROJECT_ROOT=/usr/src/app
+# ENV NODE_ENV=development
+
+WORKDIR ${PROJECT_ROOT}
+
+COPY ./ ./
+
+CMD ["yarn", "dev"]

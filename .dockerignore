@@ -1,0 +1,14 @@
+# TODO: arrange
+
+*.DS_Store
+
+.gitignore
+
+Dockerfile
+.dockerignore
+
+node_modules
+.next
+
+*.md
+LICENSE
