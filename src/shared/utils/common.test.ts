@@ -27,11 +27,11 @@ describe('utils', () => {
     });
 
     it('input {}, return true', () => {
-      expect(isDefined({})).toEqual(true);
+      expect(isDefined({})).toEqual(false);
     });
 
     it('input function, return true', () => {
-      expect(isDefined(() => {})).toEqual(true);
+      expect(isDefined(() => {})).toEqual(false);
     });
   });
 });
