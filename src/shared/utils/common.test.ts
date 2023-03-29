@@ -33,5 +33,10 @@ describe('utils', () => {
     it('input function, return true', () => {
       expect(isDefined(() => {})).toEqual(true);
     });
+
+    // TODO: remove duplicate test
+    it('input function, return true', () => {
+      expect(isDefined(() => {})).toEqual(true);
+    });
   });
 });
