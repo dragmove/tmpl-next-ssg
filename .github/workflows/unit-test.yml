@@ -1,4 +1,4 @@
-name: ✅ Unit Test
+name: Unit Test
 
 on:
   pull_request:
@@ -30,10 +30,7 @@ jobs:
         run: |
           corepack enable
           corepack prepare yarn@stable --activate
-          yarn --version
       - name: Check dependencies
         run: yarn install --immutable
       - name: Run Test
         run: yarn test
-      - name: Print Test Coverage
-        run: yarn test:coverage
