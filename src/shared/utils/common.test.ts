@@ -23,7 +23,7 @@ describe('utils', () => {
     });
 
     it('input "", return true', () => {
-      expect(isDefined('')).toEqual(false);
+      expect(isDefined('')).toEqual(true);
     });
 
     it('input {}, return true', () => {
