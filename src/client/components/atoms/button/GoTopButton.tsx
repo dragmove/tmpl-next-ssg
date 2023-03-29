@@ -1,25 +1,26 @@
-import { BREAK_POINTS } from "@client/constants/config";
-import React, { FC, SyntheticEvent } from "react";
-import styled from "styled-components";
+import { BREAK_POINTS } from '@client/constants/config';
+import React, { FC, SyntheticEvent } from 'react';
+import styled from 'styled-components';
 
 interface GoTopButtonProps {
+  title?: string;
   isVisible: boolean;
   onClick?: (evt: SyntheticEvent) => void;
 }
 
 export const GoTopButton: FC<GoTopButtonProps> = ({
+  title = 'Go Top',
   isVisible = false,
   onClick,
-}) => {
-  return (
-    <Wrap isVisible={isVisible}>
-      <Button onClick={onClick}>Go Top</Button>
-    </Wrap>
-  );
-};
+}) => (
+  <Wrap isVisible={isVisible}>
+    <Button onClick={onClick}>{title}</Button>
+  </Wrap>
+);
 
+// TODO: separate isVisible prop, position, media-query from Wrap
 const Wrap = styled.div<GoTopButtonProps>`
-  display: ${({ isVisible }) => (isVisible ? "block" : "none")}
+  display: ${({ isVisible }) => (isVisible ? 'block' : 'none')}
   position: absolute;
   right: 33px;
   bottom: 43px;
@@ -33,7 +34,7 @@ const Button = styled.button`
   border: none;
   background-color: transparent;
   font-size: 11px;
-  font-family: "Carme", "Lato", Roboto, Ubuntu, san-serif;
+  font-family: 'Carme', 'Lato', Roboto, Ubuntu, san-serif;
   color: #fff;
   letter-spacing: 0.05em;
   opacity: 0.75;

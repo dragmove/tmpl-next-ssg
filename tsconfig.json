@@ -18,7 +18,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@client/*": ["./src/client/*"],
-      "@shared/*": ["./src/shared/*"]
+      "@shared/*": ["./src/shared/*"],
+      "@stories/*": ["./src/stories/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

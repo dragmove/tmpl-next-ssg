@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Motto = () => {
   return (
-    <Wrap className="Motto">
+    <Wrap>
       조금 느리게
       <br />
       견고하게

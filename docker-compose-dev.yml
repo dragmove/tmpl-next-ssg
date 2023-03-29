@@ -9,10 +9,10 @@ services:
     volumes:
       - ./:/usr/src/app
 
-  unit-test-web:
-    build:
-      context: .
-      dockerfile: ${DOCKERFILE_NAME}
-    volumes:
-      - ./:/usr/src/app
-    command: ['yarn', 'test:watch']
+  # unit-test-web:
+  #   build:
+  #     context: .
+  #     dockerfile: ${DOCKERFILE_NAME}
+  #   volumes:
+  #     - ./:/usr/src/app
+  #   command: ['yarn', 'test:watch']
