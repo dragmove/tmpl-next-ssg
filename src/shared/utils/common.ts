@@ -8,3 +8,9 @@ export function curryr2(fn: (a: unknown, b: unknown) => any) {
 }
 
 export const eq = curryr2((a: unknown, b: unknown) => a === b);
+
+export const not = function not(fn: Function) {
+  return function () {
+    return !fn.apply(null, arguments);
+  };
+};
