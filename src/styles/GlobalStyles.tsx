@@ -2,23 +2,32 @@ import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 import tw, { theme, GlobalStyles as BaseStyles } from 'twin.macro';
 
-const CustomStyles = createGlobalStyle({
-  body: {
-    WebkitTapHighlightColor: theme`colors.purple.500`,
-    ...tw`antialiased`,
-  },
-});
+const CustomGlobalStyles = createGlobalStyle`
+  :root {
+    ${tw`antialiased`}
+
+    --color-white: 255 255 255;
+    --color-black: 0 0 0;
+
+    --font-base: 'Gothic A1', 'Nanum Gothic', dotum, verdana, Arial, applegothic, sans-serif;
+  }
+
+  body {
+    background-color: #1c1c1c;
+  }
+`;
 
 const GlobalStyles = () => (
   <>
     <BaseStyles />
-    <CustomStyles />
+    <CustomGlobalStyles />
   </>
 );
 
 export default GlobalStyles;
 
 /*
+// TODO: remove comments
 // import normalize from "styled-normalize";
 
 const GlobalStyle = createGlobalStyle`

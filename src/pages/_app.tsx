@@ -1,10 +1,10 @@
+import GlobalStyles from '@/styles/GlobalStyles';
 import Layout from '@client/components/templates/layout/Layout';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { ReactElement, ReactNode, StrictMode } from 'react';
-import GlobalStyles from '../client/styles/GlobalStyles';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
