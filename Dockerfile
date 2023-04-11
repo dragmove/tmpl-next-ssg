@@ -5,6 +5,7 @@
 # builder stage
 # ====================
 FROM node:16-alpine as builder
+RUN apk add --no-cache libc6-compat
 # RUN YARN_VERSION=$(yarn --version) && echo "[builder stage] yarn version: $YARN_VERSION"
 
 # Next.js collects completely anonymous telemetry data about general usage. (@see https://nextjs.org/telemetry)

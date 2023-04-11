@@ -3,16 +3,16 @@ services:
   web:
     build:
       context: .
-      dockerfile: ${DOCKERFILE_NAME}
+      dockerfile: Dockerfile.dev
     ports:
       - '3000:3000'
     volumes:
       - ./:/usr/src/app
 
-  unit-test-web:
-    build:
-      context: .
-      dockerfile: ${DOCKERFILE_NAME}
-    volumes:
-      - ./:/usr/src/app
-    command: ['yarn', 'test:watch']
+  # unit-test-web:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.dev
+  #   volumes:
+  #     - ./:/usr/src/app
+  #   command: ['yarn', 'test:watch']

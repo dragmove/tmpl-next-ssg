@@ -3,7 +3,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: ${DOCKERFILE_NAME}
+      dockerfile: Dockerfile
     ports:
       - '80:80'
     volumes:
