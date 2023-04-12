@@ -30,14 +30,14 @@ Run development/production server:
 
 ```bash
 # Run development (with Next.js server)
-docker compose -f docker-compose-dev.yml up --build
+docker compose --env-file .env.development -f docker-compose-dev.yml up --build
 # Access [http://localhost:3000](http://localhost:3000) with browser.
 
 # Down development
 docker compose down --remove-orphans
 
 # Run production (with Nginx server)
-docker compose -f docker-compose.yml up --build
+docker compose --env-file .env.production -f docker-compose.yml up --build
 # Access [http://localhost](http://localhost) with browser.
 
 # Down production

@@ -1,6 +1,7 @@
 version: '3.9'
 services:
   web:
+    image: dragmove/tmpl-next-ssg:development
     build:
       context: .
       dockerfile: Dockerfile.dev
