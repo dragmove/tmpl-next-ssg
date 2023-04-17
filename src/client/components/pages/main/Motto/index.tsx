@@ -9,6 +9,8 @@ const Motto = () => {
       견고하게
       <br />
       닮지 않게
+      <br />
+      process.env.NEXT_PUBLIC_GREETING: {process.env.NEXT_PUBLIC_GREETING}
     </Wrap>
   );
 };
