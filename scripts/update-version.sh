@@ -1,9 +1,8 @@
 #!/bin/bash
 
-echo "IS_GITHUB_ACTIONS: ${IS_GITHUB_ACTIONS}"
-echo "GITHUB_ACTOR: ${GITHUB_ACTOR}"
-echo "GITHUB_BASE_REF: ${GITHUB_BASE_REF}"
-echo "INTEGRATED_VERSION: ${INTEGRATED_VERSION}"
+# echo "IS_GITHUB_ACTIONS: ${IS_GITHUB_ACTIONS}"
+# echo "GITHUB_BASE_REF: ${GITHUB_BASE_REF}"
+# echo "INTEGRATED_VERSION: ${INTEGRATED_VERSION}"
 
 if [ $IS_GITHUB_ACTIONS == 'true' ]; then
   # set git user (triggered by github actions)

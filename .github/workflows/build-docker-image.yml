@@ -70,7 +70,6 @@ jobs:
         if: ${{ github.head_ref != 'main' }}
         env:
           GITHUB_BASE_REF: ${{ github.base_ref }}
-          GITHUB_ACTOR: ${{ github.actor }}
           INTEGRATED_VERSION: ${{ steps.define-variables.outputs.INTEGRATED_VERSION }}
           IS_GITHUB_ACTIONS: 'true'
         shell: bash
@@ -80,7 +79,6 @@ jobs:
           echo "DEVELOP_BRANCH_HASH: ${{ steps.define-variables.outputs.DEVELOP_BRANCH_HASH }}"
 
           echo "GITHUB_BASE_REF: ${GITHUB_BASE_REF}"
-          echo "GITHUB_ACTOR: ${GITHUB_ACTOR}"
           echo "INTEGRATED_VERSION: ${INTEGRATED_VERSION}"
           echo "IS_GITHUB_ACTIONS: ${IS_GITHUB_ACTIONS}"
 
