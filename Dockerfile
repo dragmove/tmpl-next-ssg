@@ -5,12 +5,7 @@
 # builder stage
 # ====================
 FROM node:16-alpine as builder
-RUN apk add --no-cache libc6-compat
 # RUN YARN_VERSION=$(yarn --version) && echo "[builder stage] yarn version: $YARN_VERSION"
-
-# LABEL org.opencontainers.image.authors="dragmove@gmail.com"
-LABEL version="0.1.0"
-LABEL description="Next.js SSG web aplication - production environment"
 
 # Next.js collects completely anonymous telemetry data about general usage. (@see https://nextjs.org/telemetry)
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -33,7 +28,7 @@ RUN yarn build
 # ====================
 # runner stage
 # ====================
-FROM nginx:1.24.0-alpine-slim
+FROM nginx
 
 COPY --from=builder /usr/src/app/build /usr/share/nginx/html/
 

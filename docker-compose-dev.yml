@@ -1,19 +1,18 @@
 version: '3.9'
 services:
   web:
-    image: dragmove/tmpl-next-ssg:development
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: ${DOCKERFILE_NAME}
     ports:
       - '3000:3000'
     volumes:
       - ./:/usr/src/app
 
-  # unit-test-web:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.dev
-  #   volumes:
-  #     - ./:/usr/src/app
-  #   command: ['yarn', 'test:watch']
+  unit-test-web:
+    build:
+      context: .
+      dockerfile: ${DOCKERFILE_NAME}
+    volumes:
+      - ./:/usr/src/app
+    command: ['yarn', 'test:watch']
