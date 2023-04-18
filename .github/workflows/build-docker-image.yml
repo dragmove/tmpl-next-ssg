@@ -111,3 +111,4 @@ jobs:
           version_label: tmpl-next-ssg-${{ steps.define-variables.outputs.INTEGRATED_VERSION }}
           region: ${{ secrets.AWS_REGION }}
           deployment_package: deploy/deploy.zip
+          wait_for_environment_recovery: 180
