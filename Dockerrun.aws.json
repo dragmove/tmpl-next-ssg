@@ -1,0 +1,13 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "180496040831.dkr.ecr.ap-northeast-2.amazonaws.com/tmpl-next-ssg",
+    "Update": "false"
+  },
+  "Ports": [
+    {
+      "ContainerPort": "80",
+      "HostPort": "80"
+    }
+  ]
+}

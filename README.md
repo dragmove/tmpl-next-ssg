@@ -37,7 +37,7 @@ docker compose --env-file .env.development -f docker-compose-dev.yml up --build
 docker compose down --remove-orphans
 
 # Run production (with Nginx server)
-docker compose --env-file .env.production -f docker-compose.yml up --build
+docker compose --env-file .env.production -f docker-compose-prod.yml up --build
 # Access [http://localhost](http://localhost) with browser.
 
 # Down production

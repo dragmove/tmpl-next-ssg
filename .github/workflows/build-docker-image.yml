@@ -92,7 +92,21 @@ jobs:
           INTEGRATED_VERSION: ${{ steps.define-variables.outputs.INTEGRATED_VERSION }}
         run: |
           docker build . -t dragmove/$ECR_REPOSITORY:$INTEGRATED_VERSION -t $ECR_REGISTRY/$ECR_REPOSITORY:$INTEGRATED_VERSION
-
-          docker images
-
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$INTEGRATED_VERSION
+
+      - name: Generate EB deployment package
+        run: |
+          mkdir -p deploy
+          cp Dockerrun.aws.json deploy/Dockerrun.aws.json
+          cd deploy && zip -r deploy.zip .
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: tmpl-next-ssg
+          environment_name: tmpl-next-ssg-env
+          version_label: tmpl-next-ssg-${{ steps.define-variables.outputs.INTEGRATED_VERSION }}
+          region: ap-northeast-2
+          deployment_package: deploy/deploy.zip
