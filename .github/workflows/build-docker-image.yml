@@ -88,7 +88,10 @@ jobs:
           ECR_REPOSITORY: tmpl-next-ssg
           INTEGRATED_VERSION: ${{ steps.define-variables.outputs.INTEGRATED_VERSION }}
         run: |
-          docker build . -t dragmove/$ECR_REPOSITORY:$INTEGRATED_VERSION -t $ECR_REGISTRY/$ECR_REPOSITORY:$INTEGRATED_VERSION
+          docker build -t $ECR_REPOSITORY .
+          docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:$INTEGRATED_VERSION
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$INTEGRATED_VERSION
 
       - name: Generate EB deployment package
