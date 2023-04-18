@@ -69,18 +69,15 @@ jobs:
       - name: Update package.json version
         if: ${{ github.head_ref != 'main' }}
         env:
+          # environment variables used in ./scripts/update-version.sh
           GITHUB_BASE_REF: ${{ github.base_ref }}
           INTEGRATED_VERSION: ${{ steps.define-variables.outputs.INTEGRATED_VERSION }}
           IS_GITHUB_ACTIONS: 'true'
         shell: bash
         run: |
-          echo "PACKAGE_VERSION: ${{ steps.define-variables.outputs.PACKAGE_VERSION }}"
-          echo "HEAD_COMMIT_SHA: ${{ steps.define-variables.outputs.HEAD_COMMIT_SHA }}"
-          echo "DEVELOP_BRANCH_HASH: ${{ steps.define-variables.outputs.DEVELOP_BRANCH_HASH }}"
-
-          echo "GITHUB_BASE_REF: ${GITHUB_BASE_REF}"
-          echo "INTEGRATED_VERSION: ${INTEGRATED_VERSION}"
-          echo "IS_GITHUB_ACTIONS: ${IS_GITHUB_ACTIONS}"
+          echo "outputs.PACKAGE_VERSION: ${{ steps.define-variables.outputs.PACKAGE_VERSION }}"
+          echo "outputs.HEAD_COMMIT_SHA: ${{ steps.define-variables.outputs.HEAD_COMMIT_SHA }}"
+          echo "outputs.DEVELOP_BRANCH_HASH: ${{ steps.define-variables.outputs.DEVELOP_BRANCH_HASH }}"
 
           chmod +x ./scripts/update-version.sh
           ./scripts/update-version.sh
@@ -103,9 +100,9 @@ jobs:
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v21
         with:
-          aws_access_key: ${{ env.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ env.AWS_SECRET_ACCESS_KEY }}
-          aws_session_token: ${{ env.AWS_SESSION_TOKEN }}
+          aws_access_key: ${{ env.AWS_ACCESS_KEY_ID }} # from aws-actions/configure-aws-credentials@v2
+          aws_secret_key: ${{ env.AWS_SECRET_ACCESS_KEY }} # from aws-actions/configure-aws-credentials@v2
+          aws_session_token: ${{ env.AWS_SESSION_TOKEN }} # from aws-actions/configure-aws-credentials@v2
           application_name: tmpl-next-ssg
           environment_name: tmpl-next-ssg-env
           version_label: tmpl-next-ssg-${{ steps.define-variables.outputs.INTEGRATED_VERSION }}
