@@ -37,6 +37,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/styled-components", "npm:5.1.26"],\
             ["@yarnpkg/sdks", "npm:3.0.0-rc.40"],\
             ["babel-plugin-styled-components", "virtual:34c9bdd0403da67f74c1b46da95f6b67738a7e4b1adb5ff75e4bb143ee6f95d7f2b7d5adecea842f5b8d3a86312e370dbaac53743313f8229369351cd3b59104#npm:2.0.7"],\
+            ["cross-env", "npm:7.0.3"],\
             ["eslint", "npm:8.36.0"],\
             ["eslint-config-next", "virtual:34c9bdd0403da67f74c1b46da95f6b67738a7e4b1adb5ff75e4bb143ee6f95d7f2b7d5adecea842f5b8d3a86312e370dbaac53743313f8229369351cd3b59104#npm:13.2.4"],\
             ["jest", "virtual:34c9bdd0403da67f74c1b46da95f6b67738a7e4b1adb5ff75e4bb143ee6f95d7f2b7d5adecea842f5b8d3a86312e370dbaac53743313f8229369351cd3b59104#npm:29.5.0"],\
@@ -3126,6 +3127,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/core-util-is-npm-1.0.3-ca74b76c90-9de8597363.zip/node_modules/core-util-is/",\
           "packageDependencies": [\
             ["core-util-is", "npm:1.0.3"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["cross-env", [\
+        ["npm:7.0.3", {\
+          "packageLocation": "./.yarn/cache/cross-env-npm-7.0.3-96d81820f4-26f2f3ea2a.zip/node_modules/cross-env/",\
+          "packageDependencies": [\
+            ["cross-env", "npm:7.0.3"],\
+            ["cross-spawn", "npm:7.0.3"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -7711,6 +7722,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/styled-components", "npm:5.1.26"],\
             ["@yarnpkg/sdks", "npm:3.0.0-rc.40"],\
             ["babel-plugin-styled-components", "virtual:34c9bdd0403da67f74c1b46da95f6b67738a7e4b1adb5ff75e4bb143ee6f95d7f2b7d5adecea842f5b8d3a86312e370dbaac53743313f8229369351cd3b59104#npm:2.0.7"],\
+            ["cross-env", "npm:7.0.3"],\
             ["eslint", "npm:8.36.0"],\
             ["eslint-config-next", "virtual:34c9bdd0403da67f74c1b46da95f6b67738a7e4b1adb5ff75e4bb143ee6f95d7f2b7d5adecea842f5b8d3a86312e370dbaac53743313f8229369351cd3b59104#npm:13.2.4"],\
             ["jest", "virtual:34c9bdd0403da67f74c1b46da95f6b67738a7e4b1adb5ff75e4bb143ee6f95d7f2b7d5adecea842f5b8d3a86312e370dbaac53743313f8229369351cd3b59104#npm:29.5.0"],\
