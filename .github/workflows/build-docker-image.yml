@@ -108,7 +108,8 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: tmpl-next-ssg
         run: | # update Dockerrun.aws.json content
-          cat Dockerrun.aws.json | jq '.Image.Name = "$ECR_REGISTRY/$ECR_REPOSITORY"' | tee Dockerrun.aws.json
+          IMAGE_PATH=$ECR_REGISTRY/$ECR_REPOSITORY
+          cat Dockerrun.aws.json | jq -r --arg IMAGE_PATH "$IMAGE_PATH" '.Image.Name = $IMAGE_PATH' | tee Dockerrun.aws.json
 
           mkdir -p deploy
           cp Dockerrun.aws.json deploy/Dockerrun.aws.json
