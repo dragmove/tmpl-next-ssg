@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "180496040831.dkr.ecr.ap-northeast-2.amazonaws.com/tmpl-next-ssg",
+    "Name": "ECR registry path that save docker images built. this string will be changed by github actions.",
     "Update": "false"
   },
   "Ports": [
