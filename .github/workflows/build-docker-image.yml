@@ -97,8 +97,6 @@ jobs:
             PHASE="dev"
           fi
 
-          echo "build PHASE: $PHASE"
-
           docker build --build-arg PHASE=$PHASE -t $ECR_REPOSITORY .
           docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:$UPDATED_VERSION
@@ -106,7 +104,9 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$UPDATED_VERSION
 
       - name: Generate EB deployment package
-        run: |
+        run: | # update Dockerrun.aws.json content
+          cat Dockerrun.aws.json | jq '.Image.Name = "$ECR_REGISTRY/$ECR_REPOSITORY"' | tee Dockerrun.aws.json
+
           mkdir -p deploy
           cp Dockerrun.aws.json deploy/Dockerrun.aws.json
           cd deploy && zip -r deploy.zip .
