@@ -104,6 +104,9 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$UPDATED_VERSION
 
       - name: Generate EB deployment package
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: tmpl-next-ssg
         run: | # update Dockerrun.aws.json content
           cat Dockerrun.aws.json | jq '.Image.Name = "$ECR_REGISTRY/$ECR_REPOSITORY"' | tee Dockerrun.aws.json
 
