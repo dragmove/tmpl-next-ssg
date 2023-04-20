@@ -64,14 +64,14 @@ jobs:
           DEVELOP_BRANCH_HASH=$(git rev-parse origin/develop)
           echo "DEVELOP_BRANCH_HASH=${DEVELOP_BRANCH_HASH}" >> "$GITHUB_OUTPUT"
 
-          echo "INTEGRATED_VERSION=$(node ./scripts/update-commit.js integrate-version ${{ github.base_ref }} ${{ github.sha }} ${DEVELOP_BRANCH_HASH})" >> "$GITHUB_OUTPUT"
+          echo "UPDATED_VERSION=$(node ./scripts/update-commit.js update-version ${{ github.base_ref }} ${{ github.sha }} ${DEVELOP_BRANCH_HASH})" >> "$GITHUB_OUTPUT"
 
       - name: Update package.json version
         if: ${{ github.head_ref != 'main' }}
         env:
           # environment variables used in ./scripts/update-version.sh
           GITHUB_BASE_REF: ${{ github.base_ref }}
-          INTEGRATED_VERSION: ${{ steps.define-variables.outputs.INTEGRATED_VERSION }}
+          UPDATED_VERSION: ${{ steps.define-variables.outputs.UPDATED_VERSION }}
           IS_GITHUB_ACTIONS: 'true'
         shell: bash
         run: |
@@ -84,15 +84,26 @@ jobs:
 
       - name: Build, tag, and push docker image to Amazon ECR
         env:
+          GITHUB_BASE_REF: ${{ github.base_ref }}
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: tmpl-next-ssg
-          INTEGRATED_VERSION: ${{ steps.define-variables.outputs.INTEGRATED_VERSION }}
+          UPDATED_VERSION: ${{ steps.define-variables.outputs.UPDATED_VERSION }}
         run: |
-          docker build -t $ECR_REPOSITORY .
+          if [ "$GITHUB_BASE_REF" == 'main' ]; then
+            PHASE="live"
+          elif [ "$GITHUB_BASE_REF" == 'develop' ]; then
+            PHASE="int"
+          else
+            PHASE="dev"
+          fi
+
+          echo "build PHASE: $PHASE"
+
+          docker build --build-arg PHASE=$PHASE -t $ECR_REPOSITORY .
           docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:$INTEGRATED_VERSION
+          docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:$UPDATED_VERSION
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$INTEGRATED_VERSION
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$UPDATED_VERSION
 
       - name: Generate EB deployment package
         run: |
@@ -108,7 +119,7 @@ jobs:
           aws_session_token: ${{ env.AWS_SESSION_TOKEN }} # from aws-actions/configure-aws-credentials@v2
           application_name: tmpl-next-ssg
           environment_name: tmpl-next-ssg-env
-          version_label: tmpl-next-ssg-${{ steps.define-variables.outputs.INTEGRATED_VERSION }}
+          version_label: tmpl-next-ssg-${{ steps.define-variables.outputs.UPDATED_VERSION }}
           region: ${{ secrets.AWS_REGION }}
           deployment_package: deploy/deploy.zip
           wait_for_environment_recovery: 180

@@ -2,10 +2,10 @@
 
 This is a [Nop](https://google.com) project. // Next.js, Styled-components, Yarn-berry, Docker, Docker-compose, etc.
 
-## Run with Next.js development server
+## Run local development Next.js server
 
 ```bash
-# Run development server:
+# Run development server
 yarn dev
 
 # Inspect
@@ -29,19 +29,20 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 Run development/production server:
 
 ```bash
-# Run development (with Next.js server)
-docker compose --env-file .env.development -f docker-compose-dev.yml up --build
+# Run local development (with Next.js server)
+docker compose -f docker-compose-dev.yml up
 # Access [http://localhost:3000](http://localhost:3000) with browser.
 
-# Down development
-docker compose down --remove-orphans
+# Down local development
+docker compose -f docker-compose-dev.yml down --remove-orphans
 
-# Run production (with Nginx server)
-docker compose --env-file .env.production -f docker-compose-prod.yml up --build
+# Run local production (with Nginx server)
+# docker compose -f docker-compose-prod.yml up --build
+docker compose -f docker-compose-prod.yml build --build-arg PHASE=local && docker compose -f docker-compose-prod.yml up
 # Access [http://localhost](http://localhost) with browser.
 
-# Down production
-docker compose down --remove-orphans
+# Down local production
+docker compose -f docker-compose-prod.yml down --remove-orphans
 ```
 
 ### Run unit-test with Docker

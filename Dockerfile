@@ -9,15 +9,17 @@ RUN apk add --no-cache libc6-compat
 # RUN YARN_VERSION=$(yarn --version) && echo "[builder stage] yarn version: $YARN_VERSION"
 
 # LABEL org.opencontainers.image.authors="dragmove@gmail.com"
-LABEL version="0.1.0"
 LABEL description="Next.js SSG web aplication - production environment"
 
-# Next.js collects completely anonymous telemetry data about general usage. (@see https://nextjs.org/telemetry)
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV PROJECT_ROOT=/usr/src/app
-# ENV NODE_ENV=production
+# build arguments
+ARG PHASE=dev
 
-WORKDIR ${PROJECT_ROOT}
+# environment variables
+# @see https://nextjs.org/telemetry
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PHASE=${PHASE}
+
+WORKDIR /usr/src/app
 
 COPY package.json .pnp.cjs yarn.lock .yarnrc.yml ./
 COPY .yarn ./.yarn
