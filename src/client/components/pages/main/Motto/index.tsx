@@ -1,15 +1,21 @@
 import React from 'react';
 import tw from 'twin.macro';
 
-const Motto = () => (
-  <Wrap>
-    조금 느리게
-    <br />
-    견고하게
-    <br />
-    닮지 않게
-  </Wrap>
-);
+const Motto = () => {
+  return (
+    <Wrap className="Motto">
+      조금 느리게
+      <br />
+      견고하게
+      <br />
+      닮지 않게
+      <br />
+      process.env.APP_ENV: {process.env.APP_ENV}
+      <br />
+      process.env.PHASE: {process.env.PHASE}
+    </Wrap>
+  );
+};
 
 export default Motto;
 
