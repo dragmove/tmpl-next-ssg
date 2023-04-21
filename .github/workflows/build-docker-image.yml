@@ -6,6 +6,7 @@ on:
     types:
       - closed
     branches:
+      # triggered when merge epic/feat/refactor/fix branches into epic branch
       - 'epic/**'
 
 jobs:
