@@ -2,14 +2,17 @@
 # @see https://github.com/yarnpkg/berry/discussions/3201
 
 FROM node:16-alpine
+RUN apk add --no-cache libc6-compat
+
+# LABEL org.opencontainers.image.authors="dragmove@gmail.com"
+LABEL description="Next.js SSG web aplication - development environment"
 
 # Next.js collects completely anonymous telemetry data about general usage. (@see https://nextjs.org/telemetry)
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PROJECT_ROOT=/usr/src/app
-# ENV NODE_ENV=development
 
 WORKDIR ${PROJECT_ROOT}
 
 COPY ./ ./
 
-CMD ["yarn", "dev"]
+ENTRYPOINT ["yarn", "dev"]
