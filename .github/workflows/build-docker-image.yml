@@ -1,0 +1,124 @@
+name: Build Docker Image
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - closed
+    branches:
+      # triggered when merge epic/feat/refactor/fix branches into epic branch
+      - 'epic/**'
+
+jobs:
+  update_version:
+    name: Update package version
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    permissions: # @see https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#adding-permissions-settings
+      id-token: write
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Configuration
+        run: |
+          corepack enable
+          corepack prepare yarn@stable --activate
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR # Check IAM policy - @see https://docs.aws.amazon.com/ko_kr/aws-managed-policy/latest/reference/AmazonEC2ContainerRegistryReadOnly.html
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Define variables
+        id: define-variables
+        run: |
+          echo "PACKAGE_VERSION=$(grep version package.json | awk -F \" '{print $4}')" >> "$GITHUB_OUTPUT"
+          echo "HEAD_COMMIT_SHA=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+          git fetch --depth=1 origin develop
+
+          DEVELOP_BRANCH_HASH=$(git rev-parse origin/develop)
+          echo "DEVELOP_BRANCH_HASH=${DEVELOP_BRANCH_HASH}" >> "$GITHUB_OUTPUT"
+
+          echo "UPDATED_VERSION=$(node ./scripts/update-commit.js update-version ${{ github.base_ref }} ${{ github.sha }} ${DEVELOP_BRANCH_HASH})" >> "$GITHUB_OUTPUT"
+
+      - name: Update package.json version
+        if: ${{ github.head_ref != 'main' }}
+        env:
+          # environment variables used in ./scripts/update-version.sh
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+          UPDATED_VERSION: ${{ steps.define-variables.outputs.UPDATED_VERSION }}
+          IS_GITHUB_ACTIONS: 'true'
+        shell: bash
+        run: |
+          echo "outputs.PACKAGE_VERSION: ${{ steps.define-variables.outputs.PACKAGE_VERSION }}"
+          echo "outputs.HEAD_COMMIT_SHA: ${{ steps.define-variables.outputs.HEAD_COMMIT_SHA }}"
+          echo "outputs.DEVELOP_BRANCH_HASH: ${{ steps.define-variables.outputs.DEVELOP_BRANCH_HASH }}"
+
+          chmod +x ./scripts/update-version.sh
+          ./scripts/update-version.sh
+
+      - name: Build, tag, and push docker image to Amazon ECR
+        env:
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: tmpl-next-ssg
+          UPDATED_VERSION: ${{ steps.define-variables.outputs.UPDATED_VERSION }}
+        run: |
+          if [ "$GITHUB_BASE_REF" == 'main' ]; then
+            PHASE="live"
+          elif [ "$GITHUB_BASE_REF" == 'develop' ]; then
+            PHASE="int"
+          else
+            PHASE="dev"
+          fi
+
+          docker build --build-arg PHASE=$PHASE -t $ECR_REPOSITORY .
+          docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:$UPDATED_VERSION
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$UPDATED_VERSION
+
+      - name: Generate EB deployment package
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: tmpl-next-ssg
+        run: | # update Dockerrun.aws.json content
+          IMAGE_PATH=$ECR_REGISTRY/$ECR_REPOSITORY
+          cat Dockerrun.aws.json | jq -r --arg IMAGE_PATH "$IMAGE_PATH" '.Image.Name = $IMAGE_PATH' | tee Dockerrun.aws.json
+
+          mkdir -p deploy
+          cp Dockerrun.aws.json deploy/Dockerrun.aws.json
+          cd deploy && zip -r deploy.zip .
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ env.AWS_ACCESS_KEY_ID }} # from aws-actions/configure-aws-credentials@v2
+          aws_secret_key: ${{ env.AWS_SECRET_ACCESS_KEY }} # from aws-actions/configure-aws-credentials@v2
+          aws_session_token: ${{ env.AWS_SESSION_TOKEN }} # from aws-actions/configure-aws-credentials@v2
+          application_name: tmpl-next-ssg
+          environment_name: tmpl-next-ssg-env
+          version_label: tmpl-next-ssg-${{ steps.define-variables.outputs.UPDATED_VERSION }}
+          region: ${{ secrets.AWS_REGION }}
+          deployment_package: deploy/deploy.zip
+          wait_for_environment_recovery: 180

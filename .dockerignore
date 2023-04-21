@@ -2,13 +2,21 @@
 
 *.DS_Store
 
+.aws
+
+.vscode
+
+.git
 .gitignore
 
 Dockerfile
 .dockerignore
 
 node_modules
+
 .next
+
+coverage
 
 *.md
 LICENSE
