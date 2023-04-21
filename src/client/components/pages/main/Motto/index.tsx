@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import tw from 'twin.macro';
 
 const Motto = () => {
   return (
@@ -19,15 +19,14 @@ const Motto = () => {
 
 export default Motto;
 
-const Wrap = styled.p`
-  margin-top: 32px;
-  width: 100%;
-  font-size: 0.7em;
-  font-weight: normal;
-  font-family: 'Gothic A1', 'Nanum Gothic', dotum, verdana, Arial, applegothic,
-    sans-serif;
-  letter-spacing: 0.1em;
-  text-align: center;
-  line-height: 22px;
-  color: #fff;
+const Wrap = tw.p`
+  mt-8
+  w-full
+  text-sm
+  font-base
+  [font-size: 0.7rem]
+  tracking-widest
+  text-center
+  leading-5
+  text-white
 `;
