@@ -125,14 +125,14 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "${{ github.event.repository.name }} Build start"
+                    "text": "[${{ github.event.repository.name }}] Build Start"
                   }
                 },
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ">*Version*: $UPDATED_VERSION\n>*Pull Request*: ${{ github.event.pull_request.html_url }}"
+                    "text": ">*Version*: ${{ needs.update_version.outputs.UPDATED_VERSION }}\n>*Pull Request*: ${{ github.event.pull_request.html_url }}"
                   }
                 },
                 {
@@ -154,7 +154,6 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-          UPDATED_VERSION: ${{ needs.update_version.outputs.UPDATED_VERSION }}
 
       - name: Build, tag, and push docker image to Amazon ECR
         env:
@@ -217,14 +216,14 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "${{ github.event.repository.name }} Application deployed"
+                    "text": "[${{ github.event.repository.name }}] Deployed"
                   }
                 },
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ">*Version*: $UPDATED_VERSION\n>*Pull Request*: ${{ github.event.pull_request.html_url }}"
+                    "text": ">*Version*: ${{ needs.update_version.outputs.UPDATED_VERSION }}\n>*Pull Request*: ${{ github.event.pull_request.html_url }}"
                   }
                 },
                 {
@@ -262,14 +261,14 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "${{ github.event.repository.name }} Application failed to deploy"
+                    "text": "[${{ github.event.repository.name }}] Deploy Failed"
                   }
                 },
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ">*Version*: $UPDATED_VERSION\n>*Pull Request*: ${{ github.event.pull_request.html_url }}"
+                    "text": ">*Version*: ${{ needs.update_version.outputs.UPDATED_VERSION }}\n>*Pull Request*: ${{ github.event.pull_request.html_url }}"
                   }
                 },
                 {
