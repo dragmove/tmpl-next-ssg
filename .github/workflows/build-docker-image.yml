@@ -245,7 +245,6 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-          UPDATED_VERSION: ${{ needs.update_version.outputs.UPDATED_VERSION }}
 
       - name: Notify to Slack - Deploy fail
         if: ${{ steps.deploy-eb.outcome == 'failure' }}
@@ -290,4 +289,3 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-          UPDATED_VERSION: ${{ needs.update_version.outputs.UPDATED_VERSION }}
