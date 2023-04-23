@@ -112,27 +112,6 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build, tag, and push docker image to Amazon ECR
-        env:
-          GITHUB_BASE_REF: ${{ github.base_ref }}
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: tmpl-next-ssg
-          UPDATED_VERSION: ${{ needs.update_version.outputs.UPDATED_VERSION }}
-        run: |
-          if [ "$GITHUB_BASE_REF" == 'main' ]; then
-            PHASE="live"
-          elif [ "$GITHUB_BASE_REF" == 'develop' ]; then
-            PHASE="int"
-          else
-            PHASE="dev"
-          fi
-
-          docker build --build-arg PHASE=$PHASE -t $ECR_REPOSITORY .
-          docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:$UPDATED_VERSION
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$UPDATED_VERSION
-
       - name: Notify to Slack - Application Build start
         id: notify-slack-build-start
         uses: slackapi/slack-github-action@v1.23.0
@@ -161,12 +140,12 @@ jobs:
                   "elements": [
                     {
                       "type": "image",
-                      "image_url": "${{ github.event.actor.avatar_url }}",
-                      "alt_text": "${{ github.event.actor.login }}"
+                      "image_url": "${{ github.event.pull_request.user.avatar_url }}",
+                      "alt_text": "${{ github.event.pull_request.user.login }}"
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "${{ github.event.actor.login }}"
+                      "text": "${{ github.event.pull_request.user.login }}"
                     }
                   ]
                 }
@@ -175,6 +154,28 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          UPDATED_VERSION: ${{ needs.update_version.outputs.UPDATED_VERSION }}
+
+      - name: Build, tag, and push docker image to Amazon ECR
+        env:
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: tmpl-next-ssg
+          UPDATED_VERSION: ${{ needs.update_version.outputs.UPDATED_VERSION }}
+        run: |
+          if [ "$GITHUB_BASE_REF" == 'main' ]; then
+            PHASE="live"
+          elif [ "$GITHUB_BASE_REF" == 'develop' ]; then
+            PHASE="int"
+          else
+            PHASE="dev"
+          fi
+
+          docker build --build-arg PHASE=$PHASE -t $ECR_REPOSITORY .
+          docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:$UPDATED_VERSION
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$UPDATED_VERSION
 
       - name: Generate EB deployment package
         env:
@@ -231,12 +232,12 @@ jobs:
                   "elements": [
                     {
                       "type": "image",
-                      "image_url": "${{ github.event.actor.avatar_url }}",
-                      "alt_text": "${{ github.event.actor.login }}"
+                      "image_url": "${{ github.event.pull_request.user.avatar_url }}",
+                      "alt_text": "${{ github.event.pull_request.user.login }}"
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "${{ github.event.actor.login }}"
+                      "text": "${{ github.event.pull_request.user.login }}"
                     }
                   ]
                 }
@@ -245,6 +246,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          UPDATED_VERSION: ${{ needs.update_version.outputs.UPDATED_VERSION }}
 
       - name: Notify to Slack - Deploy fail
         if: ${{ steps.deploy-eb.outcome == 'failure' }}
@@ -275,12 +277,12 @@ jobs:
                   "elements": [
                     {
                       "type": "image",
-                      "image_url": "${{ github.event.actor.avatar_url }}",
-                      "alt_text": "${{ github.event.actor.login }}"
+                      "image_url": "${{ github.event.pull_request.user.avatar_url }}",
+                      "alt_text": "${{ github.event.pull_request.user.login }}"
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "${{ github.event.actor.login }}"
+                      "text": "${{ github.event.pull_request.user.login }}"
                     }
                   ]
                 }
@@ -289,3 +291,4 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          UPDATED_VERSION: ${{ needs.update_version.outputs.UPDATED_VERSION }}
