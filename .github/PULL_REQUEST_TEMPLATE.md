@@ -4,7 +4,7 @@
 
 ### Changes
 
-- <!--- Summarize the changes -->
+- <!-- Summarize the changes -->
 
 ### Checklist
 
