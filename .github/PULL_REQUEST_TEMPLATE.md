@@ -1,6 +1,6 @@
 ## Summary
 
-- **Ticket**: <!--- Ticket number, title and link -->
+- **Ticket** : <!--- Ticket number, title and link -->
 
 ### Changes
 
