@@ -1,7 +1,8 @@
-import Head from "next/head";
-import { ReactElement, PropsWithChildren, FC } from "react";
-import styled from "styled-components";
-import { APP_NAME } from "@shared/constants/config";
+import { APP_NAME } from '@shared/constants/config';
+import Head from 'next/head';
+import { FC, PropsWithChildren, ReactElement } from 'react';
+import { Toaster } from 'react-hot-toast';
+import styled from 'styled-components';
 
 interface Props {}
 
@@ -28,6 +29,10 @@ const Layout: FC<PropsWithChildren<Props>> = ({ children }): ReactElement => {
       </Head>
 
       <Wrap>{children}</Wrap>
+
+      <div>
+        <Toaster />
+      </div>
     </>
   );
 };
