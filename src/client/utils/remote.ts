@@ -1,12 +1,6 @@
-import axios, { AxiosError } from 'axios';
-import { FetchResponse, ReactQueryOptions } from '@/shared/types/data';
-import {
-  QueryClient,
-  QueryFunction,
-  QueryKey,
-  useQuery,
-} from '@tanstack/react-query';
 import PHASE_CONFIG from '@/shared/env/phase';
+import { QueryClient } from '@tanstack/react-query';
+import axios, { AxiosError } from 'axios';
 
 /**
  * axios setting
@@ -47,22 +41,3 @@ export const queryClient = new QueryClient({
     // TODO: set options for mutation
   },
 });
-
-export const fetchData = (
-  queryKey: QueryKey,
-  queryFn: QueryFunction<FetchResponse>,
-  queryOptions?: ReactQueryOptions,
-): FetchResponse => {
-  const { isLoading, isFetching, data, error } = useQuery(
-    queryKey,
-    queryFn,
-    queryOptions,
-  );
-
-  return {
-    isLoading,
-    isFetching,
-    data,
-    error,
-  };
-};
