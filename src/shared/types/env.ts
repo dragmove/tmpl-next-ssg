@@ -1,6 +1,5 @@
-export enum PhaseType {
-  LOCAL = 'local', // local server
-  DEV = 'dev', // feature server, QA
-  INT = 'int', // integration server, QA
-  Live = 'live', // live server
+export interface PhaseConfig {
+  NAME: string;
+  DOMAIN: string;
+  API_DOMAIN: string;
 }

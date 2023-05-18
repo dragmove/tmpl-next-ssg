@@ -1,3 +1,4 @@
+import PHASE_CONFIG from '@/shared/env/phase';
 import React from 'react';
 import tw from 'twin.macro';
 
@@ -13,6 +14,8 @@ const Motto = () => {
       process.env.APP_ENV: {process.env.APP_ENV}
       <br />
       process.env.PHASE: {process.env.PHASE}
+      <br />
+      PHASE_CONFIG.DOMAIN: {PHASE_CONFIG.DOMAIN}
     </Wrap>
   );
 };
