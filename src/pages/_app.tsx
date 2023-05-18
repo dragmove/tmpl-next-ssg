@@ -1,6 +1,7 @@
+import { queryClient } from '@/client/utils/remote';
 import GlobalStyles from '@/styles/GlobalStyles';
 import Layout from '@client/components/templates/layout/Layout';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
@@ -13,8 +14,6 @@ type NextPageWithLayout = NextPage & {
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
-
-const queryClient = new QueryClient();
 
 // @see https://nextjs.org/docs/basic-features/layouts#with-typescript
 const App = ({ Component, pageProps }: AppPropsWithLayout): ReactElement => {
