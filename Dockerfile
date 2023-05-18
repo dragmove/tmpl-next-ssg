@@ -6,7 +6,7 @@
 # ====================
 FROM node:16-alpine as builder
 RUN apk add --no-cache libc6-compat
-# RUN YARN_VERSION=$(yarn --version) && echo "[builder stage] yarn version: $YARN_VERSION"
+RUN YARN_VERSION=$(yarn --version) && echo "[builder stage] yarn version: $YARN_VERSION"
 
 # LABEL org.opencontainers.image.authors="dragmove@gmail.com"
 LABEL description="Next.js SSG web aplication - production environment"
