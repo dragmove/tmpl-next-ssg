@@ -16,8 +16,10 @@ const Career = (): ReactElement => {
 
   return (
     <Article>
-      {careersError && <p>Failed to load Career data.</p>}
-      {careers && <p>Succeed to load Career data.</p>}
+      <>
+        {careersError && <p>Failed to load Career data.</p>}
+        {careers && <p>Succeed to load Career data.</p>}
+      </>
     </Article>
   );
 };
