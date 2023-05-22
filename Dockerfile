@@ -39,4 +39,7 @@ FROM nginx:1.24.0-alpine-slim
 
 COPY --from=builder /usr/src/app/build /usr/share/nginx/html/
 
+COPY ./nginx/etc/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
